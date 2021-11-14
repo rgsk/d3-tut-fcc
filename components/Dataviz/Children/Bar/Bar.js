@@ -1,12 +1,12 @@
-import React, { useLayoutEffect, useRef } from "react";
-import { useEffect, useState, useCallback } from "react";
-import styles from "./Bar.module.scss";
+import React from "react";
+import { useState, useCallback } from "react";
 import * as d3 from "d3";
 import { Legend } from "./Children/Legend";
 import { ToolTip } from "./Children/ToolTip";
 import { Marks } from "./Children/Marks";
 import { AxisBottom } from "./Children/AxisBottom";
 import { AxisLeft } from "./Children/AxisLeft";
+import { useUnitedNationsData } from "./Children/useUnitedNationsData";
 const width = 960;
 const height = 500;
 const margin = {
@@ -30,25 +30,9 @@ const toolTipMousePositionOffset = {
 };
 const siFormat = d3.format(".2s");
 const xAxisTickFormat = (tickValue) => siFormat(tickValue).replace("G", "B");
-const unitedNationsUrl =
-  "https://gist.githubusercontent.com/curran/0ac4077c7fc6390f5dd33bf5c06cb5ff/raw/605c54080c7a93a417a3cea93fd52e7550e76500/UN_Population_2019.csv";
-const useData = () => {
-  const [data, setData] = useState();
-  useEffect(() => {
-    const row = (d) => {
-      d.Population = +d["2020"] * 1000;
-      return d;
-    };
-    d3.csv(unitedNationsUrl, row).then((data) => {
-      console.log(data);
-      setData(data.slice(0, 10));
-    });
-  }, []);
-  return data;
-};
 
 function Bar() {
-  const data = useData();
+  const data = useUnitedNationsData();
   const [toolTip, setToolTip] = useState("");
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const handleMouseMove = useCallback(
@@ -76,7 +60,7 @@ function Bar() {
   return (
     <div
       style={{
-        border: "1px solid red",
+        // border: "1px solid red",
         width: "min-content",
       }}
     >
