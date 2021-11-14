@@ -13,8 +13,7 @@ const innerHeight = height - margin.top - margin.bottom;
 const innerWidth = width - margin.left - margin.right;
 const unitedNationsUrl =
   "https://gist.githubusercontent.com/curran/0ac4077c7fc6390f5dd33bf5c06cb5ff/raw/605c54080c7a93a417a3cea93fd52e7550e76500/UN_Population_2019.csv";
-
-function Bar() {
+const useData = () => {
   const [data, setData] = useState();
   useEffect(() => {
     const row = (d) => {
@@ -26,6 +25,64 @@ function Bar() {
       setData(data.slice(0, 10));
     });
   }, []);
+  return data;
+};
+const AxisBottom = ({ xScale, innerHeight }) => {
+  return (
+    <>
+      {xScale.ticks().map((tickValue, i) => (
+        <g key={i} transform={`translate(${xScale(tickValue)}, 0)`}>
+          <line stroke="black" y2={innerHeight} />
+          <text
+            y={innerHeight + 3}
+            dy=".71em"
+            style={{
+              textAnchor: "middle",
+            }}
+          >
+            {tickValue}
+          </text>
+        </g>
+      ))}
+    </>
+  );
+};
+const AxisLeft = ({ yScale }) => {
+  return (
+    <>
+      {yScale.domain().map((tickValue, i) => (
+        <text
+          key={i}
+          x={-3}
+          dy=".32em"
+          y={yScale(tickValue) + yScale.bandwidth() / 2}
+          style={{
+            textAnchor: "end",
+          }}
+        >
+          {tickValue}
+        </text>
+      ))}
+    </>
+  );
+};
+const Marks = ({ data, xScale, yScale }) => {
+  return (
+    <>
+      {data.map((d, i) => (
+        <rect
+          key={i}
+          x={0}
+          y={yScale(d.Country)}
+          width={xScale(d.Population)}
+          height={yScale.bandwidth()}
+        />
+      ))}
+    </>
+  );
+};
+function Bar() {
+  const data = useData();
   if (!data) return <p>Loading...</p>;
   const yScale = d3
     .scaleBand()
@@ -44,42 +101,9 @@ function Bar() {
     >
       <svg width={width} height={height}>
         <g transform={`translate(${margin.left}, ${margin.top})`}>
-          {xScale.ticks().map((tickValue, i) => (
-            <g key={i} transform={`translate(${xScale(tickValue)}, 0)`}>
-              <line stroke="black" y2={innerHeight} />
-              <text
-                y={innerHeight + 3}
-                dy=".71em"
-                style={{
-                  textAnchor: "middle",
-                }}
-              >
-                {tickValue}
-              </text>
-            </g>
-          ))}
-          {yScale.domain().map((tickValue, i) => (
-            <text
-              key={i}
-              x={-3}
-              dy=".32em"
-              y={yScale(tickValue) + yScale.bandwidth() / 2}
-              style={{
-                textAnchor: "end",
-              }}
-            >
-              {tickValue}
-            </text>
-          ))}
-          {data.map((d, i) => (
-            <rect
-              key={i}
-              x={0}
-              y={yScale(d.Country)}
-              width={xScale(d.Population)}
-              height={yScale.bandwidth()}
-            />
-          ))}
+          <AxisBottom xScale={xScale} innerHeight={innerHeight} />
+          <AxisLeft yScale={yScale} />
+          <Marks data={data} xScale={xScale} yScale={yScale} />
         </g>
       </svg>
     </div>
