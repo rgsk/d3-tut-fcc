@@ -6,7 +6,8 @@ import ScatterPlot from "./Children/ScatterPlot/ScatterPlot";
 function Dataviz() {
   return (
     <div>
-      <Bar />
+      <ScatterPlot />
+      {/* <Bar /> */}
     </div>
   );
 }

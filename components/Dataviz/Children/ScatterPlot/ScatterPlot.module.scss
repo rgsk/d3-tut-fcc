@@ -8,6 +8,10 @@
 }
 .mark {
   fill: #00444c;
+  cursor: pointer;
+  &:hover {
+    fill: #00717e;
+  }
 }
 .toolTipContainer {
   border: 1px solid #c0c0bb;

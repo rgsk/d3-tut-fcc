@@ -78,6 +78,7 @@ function Bar() {
         border: "1px solid red",
         width: "min-content",
         position: "relative",
+        overflow: "hidden",
       }}
       ref={toolTipParentRef}
       onMouseMove={handleMouseMove}
