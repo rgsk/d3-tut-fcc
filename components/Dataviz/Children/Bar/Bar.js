@@ -88,7 +88,13 @@ function Bar() {
         toolTip={toolTip}
         toolTipMousePositionOffset={toolTipMousePositionOffset}
       >
-        {xAxisTickFormat(toolTip)}
+        <p
+          style={{
+            fontSize: "small",
+          }}
+        >
+          {xAxisTickFormat(toolTip)}
+        </p>
       </ToolTip>
       <svg width={width} height={height}>
         <g transform={`translate(${margin.left}, ${margin.top})`}>
@@ -105,14 +111,6 @@ function Bar() {
             labelOffset={labelOffset}
             labels={labels}
           />
-          <rect
-            width={innerWidth}
-            height={innerHeight}
-            fill="#ffffff00"
-            onMouseEnter={() => {
-              setToolTip(null);
-            }}
-          ></rect>
           <Marks
             data={data}
             xScale={xScale}

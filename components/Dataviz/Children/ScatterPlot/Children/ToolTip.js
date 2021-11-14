@@ -7,22 +7,26 @@ export function ToolTip({
   toolTip,
   toolTipMousePositionOffset,
   children,
+  toolTipRef,
+  transitionDuration,
 }) {
   return (
     <AnimatePresence>
       {toolTip && (
         <motion.div
+          ref={toolTipRef}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{
-            duration: 0.2,
+            duration: transitionDuration / 1000,
           }}
           className={styles.toolTipContainer}
           style={{
             position: "absolute",
             top: mousePosition.y + toolTipMousePositionOffset.y,
             left: mousePosition.x + toolTipMousePositionOffset.x,
+            transition: `all ${transitionDuration}ms ease`,
           }}
           onMouseEnter={onMouseEnter}
         >
