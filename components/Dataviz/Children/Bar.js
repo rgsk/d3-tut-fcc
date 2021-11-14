@@ -66,15 +66,15 @@ const AxisLeft = ({ yScale }) => {
     </>
   );
 };
-const Marks = ({ data, xScale, yScale }) => {
+const Marks = ({ data, xScale, yScale, xValue, yValue }) => {
   return (
     <>
       {data.map((d, i) => (
         <rect
           key={i}
           x={0}
-          y={yScale(d.Country)}
-          width={xScale(d.Population)}
+          y={yScale(yValue(d))}
+          width={xScale(xValue(d))}
           height={yScale.bandwidth()}
         />
       ))}
@@ -84,13 +84,15 @@ const Marks = ({ data, xScale, yScale }) => {
 function Bar() {
   const data = useData();
   if (!data) return <p>Loading...</p>;
+  const yValue = (d) => d.Country;
+  const xValue = (d) => d.Population;
   const yScale = d3
     .scaleBand()
-    .domain(data.map((d) => d.Country))
+    .domain(data.map(yValue))
     .range([0, innerHeight]);
   const xScale = d3
     .scaleLinear()
-    .domain([0, d3.max(data, (d) => d.Population)])
+    .domain([0, d3.max(data, xValue)])
     .range([0, innerWidth]);
   return (
     <div
@@ -103,7 +105,13 @@ function Bar() {
         <g transform={`translate(${margin.left}, ${margin.top})`}>
           <AxisBottom xScale={xScale} innerHeight={innerHeight} />
           <AxisLeft yScale={yScale} />
-          <Marks data={data} xScale={xScale} yScale={yScale} />
+          <Marks
+            data={data}
+            xScale={xScale}
+            yScale={yScale}
+            xValue={xValue}
+            yValue={yValue}
+          />
         </g>
       </svg>
     </div>
