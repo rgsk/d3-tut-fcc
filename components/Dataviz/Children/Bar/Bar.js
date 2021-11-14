@@ -1,5 +1,4 @@
 import React, { useMemo } from "react";
-import { useState, useCallback } from "react";
 import * as d3 from "d3";
 import { Labels } from "./Children/Labels";
 import { Marks } from "./Children/Marks";
@@ -8,6 +7,7 @@ import { AxisLeft } from "./Children/AxisLeft";
 import { useUnitedNationsData } from "./Children/useUnitedNationsData";
 import ReferenceLines from "./Children/ReferenceLines";
 import { ToolTip } from "../ScatterPlot/Children/ToolTip";
+import { useHandleToolTip } from "../../../../hooks/useHandlToolTip";
 const width = 960;
 const height = 500;
 const margin = {
@@ -32,6 +32,7 @@ const toolTipMousePositionOffset = {
   x: 15,
   y: 15,
 };
+const toolTipTransitionDuration = 100;
 const siFormat = d3.format(".2s");
 const xAxisTickFormat = (tickValue) => siFormat(tickValue).replace("G", "B");
 const yValue = (d) => d.Country;
@@ -42,17 +43,17 @@ const labels = {
 };
 function Bar() {
   const data = useUnitedNationsData();
-  const [toolTip, setToolTip] = useState(null);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const handleMouseMove = useCallback(
-    (e) => {
-      setMousePosition({
-        x: e.clientX,
-        y: e.clientY,
-      });
-    },
-    [setMousePosition]
-  );
+  const {
+    toolTip,
+    setToolTip,
+    toolTipParentRef,
+    toolTipRef,
+    handleMouseMove,
+    mousePosition,
+  } = useHandleToolTip({
+    toolTipTransitionDuration,
+    marginFromBounds: 10,
+  });
 
   const yScale = useMemo(() => {
     if (!data) return;
@@ -78,15 +79,18 @@ function Bar() {
         width: "min-content",
         position: "relative",
       }}
+      ref={toolTipParentRef}
       onMouseMove={handleMouseMove}
     >
       <ToolTip
+        toolTipRef={toolTipRef}
         mousePosition={mousePosition}
         onMouseEnter={() => {
           setToolTip(null);
         }}
         toolTip={toolTip}
         toolTipMousePositionOffset={toolTipMousePositionOffset}
+        transitionDuration={toolTipTransitionDuration}
       >
         <p
           style={{

@@ -1,10 +1,4 @@
-import React, {
-  useMemo,
-  useState,
-  useCallback,
-  useRef,
-  useEffect,
-} from "react";
+import React, { useMemo } from "react";
 import { useIrisData } from "./Children/useIrisData";
 import * as d3 from "d3";
 import { Marks } from "./Children/Marks";
@@ -13,8 +7,7 @@ import { AxisLeft } from "./Children/AxisLeft";
 import { Labels } from "../Bar/Children/Labels";
 import { ToolTip } from "./Children/ToolTip";
 import styles from "./ScatterPlot.module.scss";
-import { useKeepChildWithinBoundsOfParent } from "../../../../hooks/useKeepChildWithinBoundsOfParent";
-import { usePreviousValue } from "../../../../hooks/usePreviousValue";
+import { useHandleToolTip } from "../../../../hooks/useHandlToolTip";
 const width = 960;
 const height = 500;
 const margin = {
@@ -49,30 +42,17 @@ const xValue = (d) => d["sepal_length"];
 const yValue = (d) => d["sepal_width"];
 function ScatterPlot() {
   const data = useIrisData();
-  const [toolTip, setToolTip] = useState(null);
-  const previousToolTip = usePreviousValue(toolTip);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const { parentRef, childRef } = useKeepChildWithinBoundsOfParent({
-    transitionDuration: toolTipTransitionDuration,
+  const {
+    toolTip,
+    setToolTip,
+    toolTipParentRef,
+    toolTipRef,
+    handleMouseMove,
+    mousePosition,
+  } = useHandleToolTip({
+    toolTipTransitionDuration,
     marginFromBounds: 10,
-    deps: [mousePosition],
   });
-
-  const handleMouseMove = useCallback(
-    (e) => {
-      if (toolTip && toolTip !== previousToolTip) {
-        console.log({
-          toolTip,
-          previousToolTip,
-        });
-        setMousePosition({
-          x: e.clientX,
-          y: e.clientY,
-        });
-      }
-    },
-    [setMousePosition, toolTip, previousToolTip]
-  );
   const xScale = useMemo(() => {
     if (!data) return;
     return (
@@ -103,7 +83,7 @@ function ScatterPlot() {
       }}
     >
       <ToolTip
-        toolTipRef={childRef}
+        toolTipRef={toolTipRef}
         mousePosition={mousePosition}
         onMouseEnter={() => {
           setToolTip(null);
@@ -119,7 +99,7 @@ function ScatterPlot() {
         ))}
       </ToolTip>
       <svg
-        ref={parentRef}
+        ref={toolTipParentRef}
         width={width}
         height={height}
         onMouseMove={handleMouseMove}
