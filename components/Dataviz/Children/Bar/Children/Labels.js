@@ -1,10 +1,5 @@
 import styles from "../Bar.module.scss";
-export const Labels = ({
-  innerWidth,
-  innerHeight,
-  labelOffset,
-  labelValues,
-}) => {
+export const Labels = ({ innerWidth, innerHeight, labelOffset, labels }) => {
   return (
     <>
       <text
@@ -14,7 +9,7 @@ export const Labels = ({
         textAnchor="middle"
         // or set in css class or style={{}}
       >
-        {labelValues.xAxis}
+        {labels.xAxis}
       </text>
       <text
         dy=".32em"
@@ -24,7 +19,7 @@ export const Labels = ({
         }) rotate(-90)`}
         textAnchor="middle"
       >
-        {labelValues.yAxis}
+        {labels.yAxis}
       </text>
     </>
   );

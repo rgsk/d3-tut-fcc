@@ -1,5 +1,14 @@
 import styles from "../ScatterPlot.module.scss";
-export const Marks = ({ data, xScale, yScale, xValue, yValue, setToolTip }) => {
+export const Marks = ({
+  data,
+  xScale,
+  yScale,
+  xValue,
+  yValue,
+  setToolTip,
+  markRadius,
+  labels,
+}) => {
   return (
     <>
       {data.map((d, i) => (
@@ -8,7 +17,16 @@ export const Marks = ({ data, xScale, yScale, xValue, yValue, setToolTip }) => {
           key={i}
           cx={xScale(xValue(d))}
           cy={yScale(yValue(d))}
-          r={10}
+          r={markRadius}
+          onMouseEnter={() => {
+            setToolTip([
+              `${labels.xAxis}: ${xValue(d)}`,
+              `${labels.yAxis}: ${yValue(d)}`,
+            ]);
+          }}
+          onMouseLeave={() => {
+            setToolTip(null);
+          }}
         />
       ))}
     </>

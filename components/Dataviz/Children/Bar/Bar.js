@@ -39,13 +39,13 @@ const siFormat = d3.format(".2s");
 const xAxisTickFormat = (tickValue) => siFormat(tickValue).replace("G", "B");
 const yValue = (d) => d.Country;
 const xValue = (d) => d.Population;
-const labelValues = {
+const labels = {
   xAxis: "Population",
   yAxis: "Countries",
 };
 function Bar() {
   const data = useUnitedNationsData();
-  const [toolTip, setToolTip] = useState("");
+  const [toolTip, setToolTip] = useState(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const handleMouseMove = useCallback(
     (e) => {
@@ -94,7 +94,7 @@ function Bar() {
             innerHeight={innerHeight}
             innerWidth={innerWidth}
             labelOffset={labelOffset}
-            labelValues={labelValues}
+            labels={labels}
           />
           <Marks
             data={data}

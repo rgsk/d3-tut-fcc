@@ -8,7 +8,7 @@ export const Marks = ({ data, xScale, yScale, xValue, yValue, setToolTip }) => {
             setToolTip(xValue(d));
           }}
           onMouseLeave={() => {
-            setToolTip("");
+            setToolTip(null);
           }}
           className={styles.mark}
           key={i}

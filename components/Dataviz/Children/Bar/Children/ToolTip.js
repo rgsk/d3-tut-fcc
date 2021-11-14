@@ -1,15 +1,22 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import styles from "../Bar.module.scss";
 import * as d3 from "d3";
 export const ToolTip = ({
   mousePosition,
   toolTip,
-  toolTipFormat,
+  toolTipFormat = (v) => v,
   toolTipMousePositionOffset,
   toolTipRectPadding,
+  rowSpacing = 0,
 }) => {
-  const textRef = useRef();
+  const computedToolTip = useMemo(() => {
+    if (Array.isArray(toolTip)) {
+      return toolTip;
+    }
+    return [toolTip];
+  }, [toolTip]);
+  const textContainerRef = useRef();
 
   const [toolTipRect, setToolTipRect] = useState({
     x: 0,
@@ -19,8 +26,8 @@ export const ToolTip = ({
   });
 
   useEffect(() => {
-    if (textRef.current) {
-      const text = d3.select(textRef.current);
+    if (textContainerRef.current) {
+      const text = d3.select(textContainerRef.current);
       const bbox = text.node().getBBox();
       setToolTipRect({
         x: bbox.x - toolTipRectPadding.x,
@@ -39,15 +46,23 @@ export const ToolTip = ({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
-          <rect {...toolTipRect} className={styles.toolTipContainer}></rect>
-          <text
-            ref={textRef}
-            x={mousePosition.x + toolTipMousePositionOffset.x}
-            y={mousePosition.y + toolTipMousePositionOffset.y}
-            className={styles.toolTip}
-          >
-            {toolTipFormat(toolTip)}
-          </text>
+          <rect {...toolTipRect} className={styles.toolTipContainer} />
+          <g ref={textContainerRef}>
+            {computedToolTip.map((tip, i) => (
+              <text
+                key={i}
+                x={mousePosition.x + toolTipMousePositionOffset.x}
+                y={
+                  mousePosition.y +
+                  toolTipMousePositionOffset.y +
+                  (rowSpacing + 12) * i
+                }
+                className={styles.toolTip}
+              >
+                {toolTipFormat(tip)}
+              </text>
+            ))}
+          </g>
         </motion.g>
       )}
     </AnimatePresence>
