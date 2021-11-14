@@ -1,0 +1,24 @@
+.tick {
+  line {
+    stroke: #c0c0bb;
+  }
+  text {
+    fill: #635f5d;
+  }
+}
+
+.mark {
+  fill: #688bab;
+}
+.axisLabel {
+  font-size: large;
+  fill: #635f5d;
+}
+.toolTipContainer {
+  fill: #fff;
+  stroke: #c0c0bb;
+  rx: 3;
+}
+.toolTip {
+  font-size: small;
+}

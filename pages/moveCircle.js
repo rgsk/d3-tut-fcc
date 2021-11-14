@@ -1,7 +1,6 @@
 import React, { useCallback, useState } from "react";
 const width = 480;
 const height = 500;
-const circleRadius = 30;
 const initalMousePosition = { x: width / 2, y: height / 2 };
 function MoveCircle() {
   const [mousePosition, setMousePosition] = useState(initalMousePosition);
