@@ -1,11 +1,12 @@
-import React, { useMemo, useState, useCallback } from "react";
+import React, { useMemo, useState, useCallback, useRef } from "react";
 import { useIrisData } from "./Children/useIrisData";
 import * as d3 from "d3";
 import { Marks } from "./Children/Marks";
 import { AxisBottom } from "../Bar/Children/AxisBottom";
 import { AxisLeft } from "./Children/AxisLeft";
 import { Labels } from "../Bar/Children/Labels";
-import { ToolTip } from "../Bar/Children/ToolTip";
+import { ToolTip } from "./Children/ToolTip";
+import styles from "./ScatterPlot.module.scss";
 const width = 960;
 const height = 500;
 const margin = {
@@ -30,15 +31,11 @@ const labels = {
   xAxis: "Sepal Length",
   yAxis: "Sepal Width",
 };
-const toolTipRectPadding = {
-  x: 7,
-  y: 3,
-};
+
 const toolTipMousePositionOffset = {
-  x: 20,
-  y: 30,
+  x: 15,
+  y: 15,
 };
-const toolTipRowSpacing = 8;
 const xValue = (d) => d["sepal_length"];
 const yValue = (d) => d["sepal_width"];
 function ScatterPlot() {
@@ -47,12 +44,14 @@ function ScatterPlot() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const handleMouseMove = useCallback(
     (e) => {
-      setMousePosition({
-        x: e.clientX,
-        y: e.clientY,
-      });
+      if (toolTip) {
+        setMousePosition({
+          x: e.clientX,
+          y: e.clientY,
+        });
+      }
     },
-    [setMousePosition]
+    [setMousePosition, toolTip]
   );
   const xScale = useMemo(() => {
     if (!data) return;
@@ -79,9 +78,25 @@ function ScatterPlot() {
       style={{
         border: "1px solid red",
         width: "min-content",
+        position: "relative",
       }}
+      onMouseMove={handleMouseMove}
     >
-      <svg width={width} height={height} onMouseMove={handleMouseMove}>
+      <ToolTip
+        mousePosition={mousePosition}
+        onMouseEnter={() => {
+          setToolTip(null);
+        }}
+        toolTip={toolTip}
+        toolTipMousePositionOffset={toolTipMousePositionOffset}
+      >
+        {toolTip?.map((v, i) => (
+          <p key={i} className={styles.toolTipText}>
+            {v}
+          </p>
+        ))}
+      </ToolTip>
+      <svg width={width} height={height}>
         <g transform={`translate(${margin.left}, ${margin.top})`}>
           <AxisBottom
             xScale={xScale}
@@ -99,6 +114,15 @@ function ScatterPlot() {
             labelOffset={labelOffset}
             labels={labels}
           />
+
+          <rect
+            width={innerWidth}
+            height={innerHeight}
+            fill="#ffffff00"
+            onMouseEnter={() => {
+              setToolTip(null);
+            }}
+          ></rect>
           <Marks
             data={data}
             xScale={xScale}
@@ -110,13 +134,6 @@ function ScatterPlot() {
             labels={labels}
           />
         </g>
-        <ToolTip
-          mousePosition={mousePosition}
-          toolTip={toolTip}
-          toolTipMousePositionOffset={toolTipMousePositionOffset}
-          toolTipRectPadding={toolTipRectPadding}
-          rowSpacing={toolTipRowSpacing}
-        />
       </svg>
     </div>
   );

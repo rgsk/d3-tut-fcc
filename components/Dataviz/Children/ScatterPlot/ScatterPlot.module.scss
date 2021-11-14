@@ -9,3 +9,13 @@
 .mark {
   fill: #00444c;
 }
+.toolTipContainer {
+  border: 1px solid #c0c0bb;
+  border-radius: 4px;
+  background-color: #fff;
+  padding: 8px;
+  white-space: nowrap;
+}
+.toolTipText {
+  font-size: small;
+}

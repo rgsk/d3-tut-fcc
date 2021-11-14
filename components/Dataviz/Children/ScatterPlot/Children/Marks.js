@@ -24,9 +24,6 @@ export const Marks = ({
               `${labels.yAxis}: ${yValue(d)}`,
             ]);
           }}
-          onMouseLeave={() => {
-            setToolTip(null);
-          }}
         />
       ))}
     </>

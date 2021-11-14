@@ -14,11 +14,15 @@
   font-size: large;
   fill: #635f5d;
 }
+.toolTipGroup {
+}
 .toolTipContainer {
   fill: #fff;
   stroke: #c0c0bb;
   rx: 3;
+  transition: all 100ms ease;
 }
 .toolTip {
   font-size: small;
+  transition: all 100ms ease;
 }

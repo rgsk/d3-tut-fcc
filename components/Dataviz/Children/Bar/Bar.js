@@ -2,12 +2,12 @@ import React, { useMemo } from "react";
 import { useState, useCallback } from "react";
 import * as d3 from "d3";
 import { Labels } from "./Children/Labels";
-import { ToolTip } from "./Children/ToolTip";
 import { Marks } from "./Children/Marks";
 import { AxisBottom } from "./Children/AxisBottom";
 import { AxisLeft } from "./Children/AxisLeft";
 import { useUnitedNationsData } from "./Children/useUnitedNationsData";
 import ReferenceLines from "./Children/ReferenceLines";
+import { ToolTip } from "../ScatterPlot/Children/ToolTip";
 const width = 960;
 const height = 500;
 const margin = {
@@ -27,13 +27,10 @@ const tickOffset = {
 };
 const innerHeight = height - margin.top - margin.bottom;
 const innerWidth = width - margin.left - margin.right;
-const toolTipRectPadding = {
-  x: 7,
-  y: 3,
-};
+
 const toolTipMousePositionOffset = {
-  x: 20,
-  y: 30,
+  x: 15,
+  y: 15,
 };
 const siFormat = d3.format(".2s");
 const xAxisTickFormat = (tickValue) => siFormat(tickValue).replace("G", "B");
@@ -79,9 +76,21 @@ function Bar() {
       style={{
         border: "1px solid red",
         width: "min-content",
+        position: "relative",
       }}
+      onMouseMove={handleMouseMove}
     >
-      <svg width={width} height={height} onMouseMove={handleMouseMove}>
+      <ToolTip
+        mousePosition={mousePosition}
+        onMouseEnter={() => {
+          setToolTip(null);
+        }}
+        toolTip={toolTip}
+        toolTipMousePositionOffset={toolTipMousePositionOffset}
+      >
+        {xAxisTickFormat(toolTip)}
+      </ToolTip>
+      <svg width={width} height={height}>
         <g transform={`translate(${margin.left}, ${margin.top})`}>
           <AxisBottom
             xScale={xScale}
@@ -96,6 +105,14 @@ function Bar() {
             labelOffset={labelOffset}
             labels={labels}
           />
+          <rect
+            width={innerWidth}
+            height={innerHeight}
+            fill="#ffffff00"
+            onMouseEnter={() => {
+              setToolTip(null);
+            }}
+          ></rect>
           <Marks
             data={data}
             xScale={xScale}
@@ -106,13 +123,6 @@ function Bar() {
           />
           {/* <ReferenceLines innerHeight={innerHeight} innerWidth={innerWidth} /> */}
         </g>
-        <ToolTip
-          mousePosition={mousePosition}
-          toolTipFormat={xAxisTickFormat}
-          toolTip={toolTip}
-          toolTipMousePositionOffset={toolTipMousePositionOffset}
-          toolTipRectPadding={toolTipRectPadding}
-        />
       </svg>
     </div>
   );
