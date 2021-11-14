@@ -29,7 +29,7 @@ export const ToolTip = ({
         height: bbox.height + toolTipRectPadding.y * 2,
       });
     }
-  }, [mousePosition]);
+  }, [mousePosition, toolTipRectPadding]);
   if (!toolTip) return null;
   return (
     <AnimatePresence>

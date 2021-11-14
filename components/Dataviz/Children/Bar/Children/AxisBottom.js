@@ -1,5 +1,10 @@
 import styles from "../Bar.module.scss";
-export const AxisBottom = ({ xScale, innerHeight, tickFormat }) => {
+export const AxisBottom = ({
+  xScale,
+  innerHeight,
+  tickFormat = (v) => v,
+  tickOffset = 0,
+}) => {
   return (
     <>
       {xScale.ticks().map((tickValue, i) => (
@@ -10,7 +15,7 @@ export const AxisBottom = ({ xScale, innerHeight, tickFormat }) => {
         >
           <line y2={innerHeight} />
           <text
-            y={innerHeight + 3}
+            y={innerHeight + tickOffset}
             dy=".71em"
             style={{
               textAnchor: "middle",

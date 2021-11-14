@@ -1,11 +1,10 @@
-import styles from "../Bar.module.scss";
-export const AxisLeft = ({ yScale }) => {
+export const AxisLeft = ({ yScale, tickOffset = 0 }) => {
   return (
     <>
       {yScale.domain().map((tickValue, i) => (
         <g key={i}>
           <text
-            x={-3}
+            x={-tickOffset}
             dy=".32em"
             y={yScale(tickValue) + yScale.bandwidth() / 2}
             style={{
