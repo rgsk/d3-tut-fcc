@@ -10,7 +10,7 @@ export const useUnitedNationsData = () => {
       return d;
     };
     d3.csv(unitedNationsUrl, row).then((data) => {
-      console.log(data);
+      console.log(data.slice(0, 10));
       setData(data.slice(0, 10));
     });
   }, []);
