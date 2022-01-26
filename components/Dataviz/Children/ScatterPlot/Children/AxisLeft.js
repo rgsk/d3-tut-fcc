@@ -3,11 +3,7 @@ export const AxisLeft = ({ yScale, tickOffset = 0, innerWidth }) => {
   return (
     <>
       {yScale.ticks().map((tickValue, i) => (
-        <g
-          className={styles.tick}
-          key={i}
-          transform={`translate(0, ${yScale(tickValue)})`}
-        >
+        <g key={i} transform={`translate(0, ${yScale(tickValue)})`}>
           <line x2={innerWidth} />
           <text
             x={-tickOffset}
