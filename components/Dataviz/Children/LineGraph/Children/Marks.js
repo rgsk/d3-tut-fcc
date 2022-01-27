@@ -60,7 +60,7 @@ export const Marks = ({
           /> */}
           <motion.line
             variants={lineVariants}
-            stroke="#635f5d"
+            stroke="#d1d1d1"
             strokeWidth={1}
             x1={xScale(xValue(d))}
             x2={xScale(xValue(d))}

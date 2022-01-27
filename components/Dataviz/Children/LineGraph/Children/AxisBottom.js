@@ -4,6 +4,7 @@ export const AxisBottom = ({
   innerHeight,
   tickFormat = (v) => v,
   tickOffset = 0,
+  innerWidth,
 }) => {
   return (
     <>

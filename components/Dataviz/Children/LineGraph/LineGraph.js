@@ -107,12 +107,14 @@ function LineGraph() {
             innerHeight={innerHeight}
             tickFormat={xAxisTickFormat}
             tickOffset={tickOffset.x}
+            innerWidth={innerWidth}
           />
 
           <AxisLeft
             yScale={yScale}
             tickOffset={tickOffset.y}
             innerHeight={innerHeight}
+            innerWidth={innerWidth}
           />
           <Labels
             innerHeight={innerHeight}
