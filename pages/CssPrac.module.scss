@@ -1,0 +1,21 @@
+.container {
+  margin: 12px;
+  // border: 1px solid black;
+
+  .ex1 {
+    border: 1px solid pink;
+    height: 80vh;
+    display: grid;
+    grid-template-columns: repeat(3, 150px);
+    grid-template-rows: repeat(3, 120px);
+    justify-content: space-around;
+    // justify-items: stretch;
+    column-gap: 10px;
+    row-gap: 10px;
+    align-items: stretch;
+    align-content: space-between;
+    .block {
+      background-color: aqua;
+    }
+  }
+}

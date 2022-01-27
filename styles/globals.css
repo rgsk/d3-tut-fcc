@@ -15,3 +15,35 @@ a {
   padding: 0;
   margin: 0;
 }
+.container {
+  border: 1px solid palevioletred;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-template-rows: 50px 50px 40px 60px;
+  grid-auto-flow: column;
+}
+.container > div {
+  border: 1px solid red;
+}
+
+.item-a {
+  grid-column: 1;
+  grid-row: 1/3;
+}
+.item-b {
+  grid-column: 1/3;
+  grid-row: 2/4;
+}
+.item-c {
+  grid-column: 2/6;
+  grid-row: 1;
+}
+/* 
+.item-d {
+  grid-column: 1;
+  grid-row: 1;
+}
+.item-e {
+  grid-column: 1;
+  grid-row: 1;
+} */
