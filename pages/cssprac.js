@@ -69,7 +69,7 @@ const Example3 = () => {
       </div>
       <div
         style={{
-          gridColumn: "4/7",
+          gridColumn: "4",
           gridRow: "-3/-2",
           background: "orange",
         }}

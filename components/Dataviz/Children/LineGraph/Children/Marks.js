@@ -73,13 +73,14 @@ export const Marks = ({
             key={i}
             cx={xScale(xValue(d))}
             cy={innerHeight - yScale(yValue(d))}
-            r={6}
+            r={8}
             onMouseEnter={() => {
               setToolTip([`${xValue(d)}: ${yValue(d)}`]);
             }}
             onMouseLeave={() => {
               setToolTip(null);
             }}
+            style={{ cursor: "pointer" }}
           />
           {i > 0 && (
             <motion.line

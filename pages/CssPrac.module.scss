@@ -6,7 +6,13 @@
     border: 1px solid pink;
     height: 80vh;
     display: grid;
-    grid-template-columns: repeat(3, 150px);
+    grid-template-columns: repeat(4, minmax(150px, 1fr));
+    @media (max-width: 900px) {
+      grid-template-columns: repeat(2, minmax(150px, 1fr));
+    }
+    @media (max-width: 600px) {
+      grid-template-columns: repeat(1, minmax(150px, 1fr));
+    }
     grid-template-rows: repeat(3, 120px);
     justify-content: space-around;
     // justify-items: stretch;
